@@ -1,5 +1,5 @@
 from flask import Flask
-from blueprints import user
+from day_01.blueprints import user
 
 
 class MyConfig(object):

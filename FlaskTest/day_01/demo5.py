@@ -1,5 +1,6 @@
 from flask import Flask
-from users import *
+from day_01.users import *
+from day_01.carts import cart_bp
 
 
 class MyConfig(object):
@@ -23,6 +24,7 @@ def create_app():
 
 app = create_app()
 app.register_blueprint(user_bp)
+app.register_blueprint(cart_bp)
 
 
 # register route
