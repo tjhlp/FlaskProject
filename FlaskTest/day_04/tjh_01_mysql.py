@@ -28,5 +28,4 @@ User.query.filter(User.mobile!='13911111111').all()
 User.query.offset(3).all()
 # 根据id排序  order_by 排序
 User.query.order_by(User.id.desc()).all()
-
 """

@@ -55,6 +55,17 @@ class User(db.Model):
     email = db.Column(db.String, doc='邮箱')
     status = db.Column(db.Integer, default=1, doc='状态，是否可用')
 
+    user_profile = db.relationship('UserProfile', primaryjoin='User.id==foreign(UserProfile.id)', uselist=False)
+
+    following = db.relationship('Relation', primaryjoin='User.id==foreign(Relation.user_id)')
+
+
+# 需求：当有一个User对象，根据User对象获取 UserProfile 用户资料表中的字段值
+
+# 已知user对象查询用户资料表的性别：
+
+# 需求：查询用户id为1，关注的每一个用户的昵称
+
 
 class UserProfile(db.Model):
     """
@@ -100,3 +111,22 @@ class Relation(db.Model):
     relation = db.Column(db.Integer, doc='关系')
     ctime = db.Column('create_time', db.DateTime, default=datetime.now, doc='创建时间')
     utime = db.Column('update_time', db.DateTime, default=datetime.now, onupdate=datetime.now, doc='更新时间')
+
+
+@app.route('/')
+def index():
+    try:
+        user = User(mobile='15312345678', name='xiaoming')
+        db.session.add(user)
+        # db.session.flush()
+        user_profile = UserProfile(id=user.id)
+        db.session.add(user_profile)
+        db.session.commit()
+    except:
+        db.session.rollback()
+
+    return 'hello'
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)

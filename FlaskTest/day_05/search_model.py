@@ -55,6 +55,15 @@ class User(db.Model):
     email = db.Column(db.String, doc='邮箱')
     status = db.Column(db.Integer, default=1, doc='状态，是否可用')
 
+    user_profile = db.relationship('UserProfile', uselist=False)
+
+    following = db.relationship('Relation')
+
+
+# 需求：当有一个User对象，根据User对象获取 UserProfile 用户资料表中的字段值
+
+# 已知user对象查询用户资料表的性别：
+
 
 class UserProfile(db.Model):
     """
@@ -66,7 +75,7 @@ class UserProfile(db.Model):
         MALE = 0
         FEMALE = 1
 
-    id = db.Column('user_id', db.Integer, primary_key=True, doc='用户ID')
+    id = db.Column('user_id', db.Integer, db.ForeignKey(User.id), primary_key=True, doc='用户ID')
     gender = db.Column(db.Integer, default=0, doc='性别')
     birthday = db.Column(db.Date, doc='生日')
     real_name = db.Column(db.String, doc='真实姓名')
@@ -95,7 +104,7 @@ class Relation(db.Model):
         BLACKLIST = 2
 
     id = db.Column('relation_id', db.Integer, primary_key=True, doc='主键ID')
-    user_id = db.Column(db.Integer, doc='用户ID')
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), doc='用户ID')
     target_user_id = db.Column(db.Integer, doc='目标用户ID')
     relation = db.Column(db.Integer, doc='关系')
     ctime = db.Column('create_time', db.DateTime, default=datetime.now, doc='创建时间')
